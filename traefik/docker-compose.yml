@@ -38,12 +38,12 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.homelab.com`)"
-      - "traefik.http.routers.traefik.entrypoints=https"
-      - "traefik.http.routers.traefik.tls=true"
-      - "traefik.http.routers.traefik.service=traefik@docker"
-      - "traefik.http.routers.traefik.middlewares=strip"
-      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`traefik.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.service=traefik@docker"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.middlewares=strip"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8080"
       - "traefik.http.middlewares.strip.stripprefix.prefixes=/dashboard"
     networks:
       - proxy
