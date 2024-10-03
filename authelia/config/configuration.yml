@@ -1,0 +1,182 @@
+---
+###############################################################
+#                   Authelia configuration                    #
+###############################################################
+
+server:
+  address: 'tcp://:9091'
+
+log:
+  level: 'debug'
+
+totp:
+  issuer: 'auth.homelab.com'
+
+identity_validation:
+  reset_password:
+    jwt_secret: 'InESJ7V7zK4qcj6o5kJ_DWCJ_bos670Zq8Rz2aNQpwaAEAejo3_S_Eiupy2_RkSshnYga5NwBJF8jWhRuSnbLQ'
+
+authentication_backend:
+  file:
+    path: '/config/users_database.yml'
+
+access_control:
+  default_policy: 'deny'
+  rules:
+    # Rules applied to everyone
+    - domain: 'public.example.com'
+      policy: 'bypass'
+    - domain: 'traefik.homelab.com'
+      policy: 'one_factor'
+    - domain: 'secure.example.com'
+      policy: 'two_factor'
+
+session:
+  # This secret can also be set using the env variables AUTHELIA_SESSION_SECRET_FILE
+  secret: 'ft6gbMwshjJ1KGxANkuREvhh2v8BSOcRrGc30jwqgcMElQ-36D_DPNiKSEIUlSR3d3R9lR6XiOMhsr4kYZ_URw'
+
+  cookies:
+    - name: 'authelia_session'
+      domain: 'homelab.com'  # Should match whatever your root protected domain is
+      authelia_url: 'https://auth.homelab.com'
+      default_redirection_url: 'https://homelab.com'
+      expiration: '1 hour'
+      inactivity: '5 minutes'
+
+  redis:
+    host: 'redis'
+    port: 6379
+    # This secret can also be set using the env variables AUTHELIA_SESSION_REDIS_PASSWORD_FILE
+    # password: authelia
+
+regulation:
+  max_retries: 3
+  find_time: '2 minutes'
+  ban_time: '5 minutes'
+
+storage:
+  encryption_key: '1SY7_OOFXLKSxiut8IEu8ldUT0Y2P-7o5UuYzXs_5o6qBb_I0OKESGAZi9iuwNLFehEM6UILyy85xy2A-kQMYw'
+  local:
+    path: '/config/db.sqlite3'
+
+notifier:
+  smtp:
+    username: ''
+    password: ''
+    address: 'smtp://mailcatch:1025'
+    sender: 'authelia@homelab.com'
+    disable_starttls: true
+
+identity_providers:
+  oidc:
+    hmac_secret: J-uF70xOWHTGTy3xSmw7LaeaOJOnpW-T_uJw7MMxOLctKhkxyOWkVo525kSKY-JBGF0CY1X9eGE-f9CUef7e8HzvyPA4zjbxHpcVtTD0LdPnEDxXfuXLeZQqBzAUAdPuu7ihHJPR9rsOXx0_UJUfBdxeDnh0HGQBEGotdB5dKXk
+    jwks:
+      - key_id: main
+        algorithm: RS256
+        use: 'sig'
+        key: |
+          -----BEGIN PRIVATE KEY-----
+          MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCysnu1kdSzbVqG
+          qBvbNZ/7Tc6G8N3s7hVu3og0YjpdFxq3+n4Kn06Ui8TUPj+AbYJuKXV6cqPD23Uk
+          7bJXj6IC46TyWX8+0ig9AwgfG0tQddJQwEyKZYWTEwYA6vsBb7/0okPjPpkIyeZU
+          JmA12kEmjEAhEQxZJyI0EPipH3R85r3ea+ve+Tz9rt4b1DUxgu33UaSTG+wwl1pV
+          alSSBAnCovGjIN16MxGvjNyb4ymChsMOth8UA6Ucu2+VTWE/tt071Qca3lDICoBZ
+          aqgIhfpqC0ikE+DgEPBUkk5LNMKe2nHDTQ3aG0AJt1ucLbgnVkGr66ufrbQKA6mb
+          f/O+/T8TAgMBAAECggEAIOv1Eqx9TVk2Nly+VRJ6GOhqxj2WBVKPrE9fNJdsPT5G
+          c+K4Weijp4ZgiuG0/Uovn3AP7rE0Lp8948HO+4bAyFt8RhHq+X3qX+MxGdoDdB1g
+          0/O5pj2x8DivAHhKKieWa9GBRFqCAzZ/Mr2nOASvwBRStETZy4sEKCeASFg9M81X
+          /BSy4mcBsnwE+m2bEfhK7NWt/56Nho4iWSDl3RWIXEEjzWqOD97i35xAeeY7yYvP
+          /RvH4VSt1/IyXFWg9iqtj41byWAA+XzLI0mFY4EsDMeD5X9ect+Ger/FtvtYlL4l
+          OGMwJZAp9UmAk0OtCMeb4fTrR0me7x9mHcIiRElSMQKBgQDKfJOQ9ndIIgtZHjnK
+          7CqBFD9FIh4mwca3RHPKG3ScLFMkaC0F+QztER64+OoKpiO9EyHnfKYo2gMBf6Rg
+          ye2fC+b71cMHvaTe3rdIBLXvqjbrfXQBzCJV8rjvU6qNbXazPkwS/B5WAWJGAL6i
+          xXlRg0cci07fA86vGIe1y4vYpwKBgQDh7Gkl9pal6Qt3SMZxO/zEz7jhV+Awx33M
+          75BSyRfxLMaeqFmq7XleXTrI4uey3A5ZoOvutzMZBO9sStYixS0c5PAiyg0dVOhl
+          IpGbMNXGsKhgGQcr6TAs2Abnft/q+2R3RH81dIULgHpG0sRwVOpzigfNn3C4767I
+          R4MpKduHtQKBgH/5NBqOat0AB0QPwl7p3AMwlLxQz9WW6syxSq0VpSF/Mhz0amA4
+          A19hTpWBXAnW7wd0rBztvuZaw0OTNISnmrLGhvnrJBQkW6sv/45Yy9PpNESpSURJ
+          i/neKdu4eTZhVH/8g4AML/ATd9Tea53cSMynt63mrbZtZZdsXXkcaApJAoGBAK0G
+          ckEw6Y+HO9DPW6u9VYklzWJH+ttg7WfW0aGVgVCkCjnYlVPjK+CpZiwUG39QKW1b
+          YVYh2HCA5xz486cNe891RrReKk0cih9qqjlA3XieM1Xl1Sg8Hzk4+ZCyCqvcfMUb
+          IJG/+2UjsIItSWT+o9B5FiDUy2/XoPSiUEFmXUtBAoGBAMQgHqzmT0doGe9ilRkx
+          31mwkysm0z9gMdHtIq2ihFRtrGvP5EfJLtsJwN9SEZDME3XNnSvvdAAZxEtriSB+
+          NgBDHPxPoylz0j3Z1ouLDtRRcKYVpTMxeEXX5nmVKpJ+Du+axhNtBCfxmuDae38n
+          VhbYu35NX0gdfCo6LmI/GyBu
+          -----END PRIVATE KEY-----
+
+    clients:
+      - client_id: 'outline'
+        client_name: 'Outline'
+        client_secret: '$pbkdf2-sha512$310000$c8p78n7pUMln0jzvd4aK4Q$JNRBzwAo0ek5qKn50cFzzvE9RXV88h1wJn5KGiHrD0YKtZaR/nCb2CJPOsKaPK0hjf.9yHxzQGZziziccp6Yng'  # The digest of 'insecure_secret'.
+        public: false
+        authorization_policy: one_factor
+        redirect_uris:
+          - https://wiki.homelab.com/auth/oidc.callback
+        scopes:
+          - openid
+          - offline_access
+          - profile
+          - email
+        grant_types:
+          - refresh_token
+          - authorization_code
+        response_types:
+          - code
+        response_modes:
+          - form_post
+          - query
+          - fragment
+        token_endpoint_auth_method: 'client_secret_post'
+
+      # schedule.homelab.com
+      - client_id: schedule
+        client_name: schedule
+        client_secret: '$pbkdf2-sha512$310000$c8p78n7pUMln0jzvd4aK4Q$JNRBzwAo0ek5qKn50cFzzvE9RXV88h1wJn5KGiHrD0YKtZaR/nCb2CJPOsKaPK0hjf.9yHxzQGZziziccp6Yng'  # The digest of 'insecure_secret'.
+        public: false
+        authorization_policy: one_factor
+        redirect_uris:
+          - https://schedule.homelab.com/api/auth/callback/oidc
+        scopes:
+          - openid
+          - profile
+          - email
+        consent_mode: implicit
+
+      # design.homelab.com
+      - client_id: design
+        client_name: design
+        client_secret: '$pbkdf2-sha512$310000$c8p78n7pUMln0jzvd4aK4Q$JNRBzwAo0ek5qKn50cFzzvE9RXV88h1wJn5KGiHrD0YKtZaR/nCb2CJPOsKaPK0hjf.9yHxzQGZziziccp6Yng'  # The digest of 'insecure_secret'.
+        public: false
+        authorization_policy: two_factor
+        redirect_uris:
+          - https://design.homelab.com/api/auth/oauth/oidc/callback
+        scopes:
+          - email
+          - groups
+          - openid
+          - profile
+        # consent_mode: implicit
+        grant_types:
+          - refresh_token
+          - authorization_code
+        response_types:
+          - code
+        response_modes:
+          - form_post
+          - query
+          - fragment
+        token_endpoint_auth_method: 'client_secret_post'
+
+      - client_id: vikunja
+        client_name: Vikunja
+        client_secret: '$pbkdf2-sha512$310000$c8p78n7pUMln0jzvd4aK4Q$JNRBzwAo0ek5qKn50cFzzvE9RXV88h1wJn5KGiHrD0YKtZaR/nCb2CJPOsKaPK0hjf.9yHxzQGZziziccp6Yng'  # The digest of 'insecure_secret'.
+        public: false
+        authorization_policy: two_factor
+        redirect_uris:
+          - https://plan.homelab.com/auth/openid/authelia
+        scopes:
+          - openid
+          - profile
+          - email
+        userinfo_signed_response_alg: none
+        token_endpoint_auth_method: client_secret_basic

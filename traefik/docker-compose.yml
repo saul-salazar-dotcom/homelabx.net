@@ -1,0 +1,49 @@
+name: traefik
+
+networks:
+  proxy:
+    name: proxy
+
+services:
+  mkcert:
+    image: vishnunair/docker-mkcert
+    restart: always
+    environment:
+      - domain=${MKCERT_DOMAINS:-homelab.com,*.homelab.com}
+    volumes:
+        - ./certs/:/root/.local/share/mkcert
+    labels:
+      - "traefik.enable=false"
+    networks:
+      - proxy
+    logging:
+      driver: 'local'
+
+  proxy:
+    image: traefik:latest
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik.yml:/etc/traefik/traefik.yml:ro"
+      - "./dynamic.yml:/etc/traefik/dynamic.yml:ro"
+      - "./certs/:/etc/certs:ro"
+    logging:
+      driver: 'local'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.homelab.com`)"
+      - "traefik.http.routers.traefik.entrypoints=https"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.service=traefik@docker"
+      - "traefik.http.routers.traefik.middlewares=strip"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.strip.stripprefix.prefixes=/dashboard"
+    networks:
+      - proxy
