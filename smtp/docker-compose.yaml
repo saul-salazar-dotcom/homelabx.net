@@ -1,0 +1,28 @@
+name: smtp
+
+networks:
+  smtp:
+    name: smtp
+  proxy:
+    external: true
+
+services:
+  mailcatch:
+    image: sj26/mailcatcher
+    restart: always
+    logging:
+      driver: 'local'
+    expose:
+      - "1025"
+    ports:
+      - "1587:1080"
+    networks:
+      - proxy
+      - smtp
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`smtp.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=1080"
