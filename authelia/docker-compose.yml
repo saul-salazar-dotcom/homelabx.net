@@ -42,7 +42,7 @@ services:
     image: redis:alpine
     restart: unless-stopped
     volumes:
-      - ./redis:/data
+      - ./data_redis:/data
     networks:
       - default
     expose:
