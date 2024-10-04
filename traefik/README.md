@@ -7,9 +7,6 @@ This traefik is for local development purposes. Includes HTTPS support on localh
 ## Quick Start
 
 ```sh
-# update to match your domain name
-MKCERT_DOMAINS="homelab.com,*.homelab.com"
-
 # create certificates
 docker compose start mkcert
 
@@ -19,6 +16,9 @@ sudo update-ca-certificates
 
 # start containers
 docker compose up -d
+
+# optional: update to match your domain name
+MKCERT_DOMAINS="myHomelabName.net,*.myHomelabName.net"
 ```
 
 ## Firefox
