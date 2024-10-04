@@ -1,0 +1,31 @@
+name: tv
+
+networks:
+  default:
+    name: proxy
+    external: true
+
+services: 
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    restart: always
+    ports:
+      # GUI
+      - 8096:8096
+      # Auto Discovery
+      - 7359:7359
+      - 1900:1900
+    environment:
+      - TZ=America/Monterrey
+      - JELLYFIN_PublishedServerUrl=https://tv.homelab.com
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`tv.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8096"
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - /media/saul/disk0/movies:/data/movies
+      - /media/saul/disk0/series:/data/series

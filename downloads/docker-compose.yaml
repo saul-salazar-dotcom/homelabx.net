@@ -1,0 +1,29 @@
+name: downloads
+
+networks:
+  default:
+    external: true
+    name: proxy
+
+services:
+  server:
+    image: jlesage/jdownloader-2
+    restart: always
+    logging:
+      driver: 'local'
+    volumes:
+      - ./data_jdownloader:/config:rw
+      - /home/$USER/Downloads:/output:rw
+    ports:
+      - 5800:5800
+      - 3129:3129
+    environment:
+      DARK_MODE: 1
+      KEEP_APP_RUNNING: 1
+      TZ: America/Monterrey
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`jdownloader.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=5800"

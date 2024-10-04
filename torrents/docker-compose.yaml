@@ -1,0 +1,29 @@
+name: qbittorrent
+networks:
+  default:
+    external: true
+    name: proxy
+
+services:
+  server:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - WEBUI_PORT=5900
+      - TORRENTING_PORT=6881
+    volumes:
+      - ./data_qbittorrent:/config
+      - /home/$USER/Downloads:/downloads
+    ports:
+      - 5900:5900
+      - 6881:6881
+      - 6881:6881/udp
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`qbittorrent.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=5900"
