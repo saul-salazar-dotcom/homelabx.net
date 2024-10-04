@@ -21,7 +21,6 @@ curl -fsSL https://raw.githubusercontent.com/saul-salazar-dotcom/homelabx.net/ma
 - [📺 torrents](https://torrents.homelab.com) Torrents downloads manager by [QBitTorrent](https://www.qbittorrent.org)
 
 ### 📄 DOCUMENTATION
-- [📝 daily](https://daily.homelab.com) Write daily (markdown editor) by [Haptic](https://www.haptic.md)
 - [📕 notes](https://notes.homelab.com) Write notes by [memos](https://www.usememos.com)
 - [🆕 changelog](https://changelog.homelab.com) Write release notes by [OpenChangelog](https://openchangelog.com)
 - [📚 wiki](https://wiki.homelab.com) Write documentation with realtime collaboration by [Outline](https://www.getoutline.com) (confluence, notion)
