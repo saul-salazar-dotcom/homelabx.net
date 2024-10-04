@@ -1,0 +1,31 @@
+site_description: Setup a homelab in a single command (Cross Platform)
+site_name: HomelabX.net
+repo_name: saul-salazar-dotcom/homelabx.net
+repo_name_short: github/homelabx.net
+repo_url: https://github.com/saul-salazar-dotcom/homelabx.net
+site_url: https://www.homelabx.net/
+copyright: Powered by Open Source Software. Logo and Favicon by <a href="https://icons8.com">icons8</a>
+
+nav:
+  - Home: index.md
+
+theme:
+  name: simple-blog
+  favicon: assets/favicon.png
+  logo: assets/favicon.png
+  theme_style: white
+  site_name_style: normal
+  title_style: bold
+  highlightjs: false
+  custom_dir: custom_theme
+  colors:
+    text: black
+    title: black
+    primary: black
+    background: white
+  components:
+    site_name: true
+    title: true
+    menu: true
+    preview: true
+    footer: true
