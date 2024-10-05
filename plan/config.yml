@@ -1,0 +1,10 @@
+auth:
+  openid:
+    enabled: true
+    redirecturl: https://plan.homelab.com/auth/openid/
+    providers:
+      - name: Authelia
+        authurl: https://auth.homelab.com
+        clientid: vikunja
+        clientsecret: insecure_secret
+        scope: openid profile email

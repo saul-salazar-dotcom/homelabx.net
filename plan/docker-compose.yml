@@ -1,0 +1,69 @@
+name: plan
+
+networks:
+  proxy:
+    external: true
+  smtp:
+    external: true
+
+services:
+  vikunja:
+    # image: vikunja/vikunja
+    build: .
+    restart: always
+    ports:
+      - 3456:3456
+    volumes:
+      - ./data_vikunja:/app/vikunja/files
+      - ./config.yml:/etc/vikunja/config.yml
+    networks:
+      - default
+      - proxy
+      - smtp
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      VIKUNJA_SERVICE_PUBLICURL: https://plan.homelab.com
+      VIKUNJA_DATABASE_HOST: db
+      VIKUNJA_DATABASE_PASSWORD: changeme
+      VIKUNJA_DATABASE_TYPE: mysql
+      VIKUNJA_DATABASE_USER: vikunja
+      VIKUNJA_DATABASE_DATABASE: vikunja
+      VIKUNJA_SERVICE_JWTSECRET: jc9wqoWJ7OvM9KT17lgTnH1YhqD3Yrm0gl4sMJQQE-wlWEcWAafkzCoGdNAhTjyKBFr3Ufam9xE9UKiDtk1rYnFegUIqcs11qJx1BIROPsE901BQZMxp0XM7EQWO24w0DSFlrsrV8zKl0VrraMpVdHHSQyUwGfDqOyPhjUgcg9A
+      VIKUNJA_SERVICE_TIMEZONE: America/Monterrey
+      VIKUNJA_MAILER_ENABLED: true
+      VIKUNJA_MAILER_HOST: mailcatch
+      VIKUNJA_MAILER_PORT: 1025
+      VIKUNJA_MAILER_USERNAME: ""
+      VIKUNJA_MAILER_SKIPTLSVERIFY: true
+      VIKUNJA_MAILER_FROMEMAIL: vikunja@homelab.com
+      # default config for new users
+      VIKUNJA_DEFAULTSETTINGS_DISCOVERABLE_BY_NAME: true
+      VIKUNJA_DEFAULTSETTINGS_DISCOVERABLE_BY_EMAIL: true
+      VIKUNJA_DEFAULTSETTINGS_WEEK_START: 1
+      VIKUNJA_AUTH_OPENID_ENABLED: true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`plan.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=3456"
+
+
+  db:
+    image: mariadb:10
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+    volumes:
+      - ./data_mariadb:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u $$MYSQL_USER --password=$$MYSQL_PASSWORD"]
+      interval: 2s
+      start_period: 30s
+    environment:
+      MYSQL_ROOT_PASSWORD: supersecret
+      MYSQL_USER: vikunja
+      MYSQL_PASSWORD: changeme
+      MYSQL_DATABASE: vikunja
