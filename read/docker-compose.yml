@@ -1,0 +1,23 @@
+name: read
+
+networks:
+  default:
+    name: proxy
+    external: true
+
+services:
+  readeck:
+    image: codeberg.org/readeck/readeck:latest
+    restart: always
+    stdin_open: true
+    tty: true
+    ports:
+      - 8000:8000
+    volumes:
+      - ./data:/readeck
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`read.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8000"
