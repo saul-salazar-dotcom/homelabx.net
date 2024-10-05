@@ -1,0 +1,21 @@
+name: notes
+
+networks:
+  default:
+    name: proxy
+    external: true
+
+services:
+  server:
+    image: neosmemo/memos:stable
+    volumes:
+      - ./data_memos:/var/opt/memos
+    ports:
+      - 5230:5230
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`notes.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=5230"
