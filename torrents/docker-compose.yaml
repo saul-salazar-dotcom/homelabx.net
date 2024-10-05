@@ -1,4 +1,4 @@
-name: qbittorrent
+name: torrents
 networks:
   default:
     external: true
@@ -6,7 +6,7 @@ networks:
 
 services:
   server:
-    image: lscr.io/linuxserver/qbittorrent:latest
+    image: lscr.io/linuxserver/qbittorrent
     restart: unless-stopped
     environment:
       - PUID=1000
@@ -23,7 +23,7 @@ services:
       - 6881:6881/udp
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`qbittorrent.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`torrents.homelab.com`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=5900"
