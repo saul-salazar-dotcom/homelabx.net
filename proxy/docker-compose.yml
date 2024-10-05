@@ -1,4 +1,4 @@
-name: traefik
+name: proxy
 
 networks:
   proxy:
@@ -19,8 +19,8 @@ services:
     logging:
       driver: 'local'
 
-  proxy:
-    image: traefik:latest
+  traefik:
+    image: traefik
     restart: always
     ports:
       - "80:80"
