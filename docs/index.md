@@ -1,4 +1,4 @@
-Setup a homelab in a single command line.
+Setup a homelab in a single command line. AI included.
 
 ## 🔥 QUICK START
 
@@ -32,6 +32,7 @@ curl -fsSL https://raw.githubusercontent.com/saul-salazar-dotcom/homelabx.net/ma
 - [🧐 read](https://read.homelab.com) Save links to read later by [Readeck](https://readeck.org)
 - [📅 schedule](https://schedule.homelab.com) Create scheduling polls by [Rallly](https://rallly.co/)
 - [📋 plan](https://plan.homelab.com) Project Management (kanban,list,gantt) by [vikunja](https://vikunja.io)
+- [📋 ai](https://ai.homelab.com) AI Chatbot by [ollama](https://ollama.com) (chatGPT)
 
 ### 🏗️ INFRASTRUCTURE
 - [🔀 proxy](https://proxy.homelab.com) Reverse Proxy by [Traefik](https://traefik.io) and [mkcert](https://github.com/FiloSottile/mkcert)
