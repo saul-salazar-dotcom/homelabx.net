@@ -1,0 +1,43 @@
+name: schedule
+
+networks:
+  proxy:
+    external: true
+  smtp:
+    external: true
+
+services:
+  db:
+    image: postgres:14.2
+    restart: always
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  server:
+    image: lukevella/rallly
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 3333:3000
+    env_file:
+      - config.env
+    networks:
+      - smtp
+      - proxy
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`schedule.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=3000"
