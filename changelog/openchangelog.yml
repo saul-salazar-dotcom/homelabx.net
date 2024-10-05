@@ -1,0 +1,13 @@
+addr: 0.0.0.0:6001
+local:
+  filesPath: data
+page:
+  hidePoweredBy: true
+  colorScheme: system
+  title: Changelog
+  subtitle: Here is a rundown of the latest updates and improvements.
+  logo:
+    # src: https://openchangelog.com/logo.svg
+    width: 70px
+    height: 25px
+    link: https://www.openchangelog.com

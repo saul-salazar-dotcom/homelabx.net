@@ -1,0 +1,26 @@
+name: changelog
+
+networks:
+  default:
+    external: true
+    name: proxy
+
+services:
+  openchangelog:
+    image: ghcr.io/jonashiltl/openchangelog
+    restart: always
+    volumes:
+      - ./openchangelog.yml:/etc/openchangelog.yml:ro
+      - ./data/:/app/data
+    ports:
+      - 1010:6001
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '100m'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`changelog.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=6001"
