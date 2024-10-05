@@ -7,14 +7,14 @@ networks:
 
 services:
   readeck:
-    image: codeberg.org/readeck/readeck:latest
+    image: codeberg.org/readeck/readeck
     restart: always
     stdin_open: true
     tty: true
     ports:
-      - 8000:8000
+      - 8888:8000
     volumes:
-      - ./data:/readeck
+      - ./data_readeck:/readeck
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`read.homelab.com`)"
