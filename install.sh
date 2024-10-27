@@ -8,8 +8,8 @@ FILE="$HOME/homelabx/proxy/certs/rootCA.pem"
 echo "⏳ Waiting for mkcert to create a root CA..."
 while true; do
     if [ -f "$FILE" ]; then
-        ln -s "$FILE" plan/rootCA.pem
-        ln -s "$FILE" design/rootCA.pem
+        cp "$FILE" plan
+        cp "$FILE" design
         break
     fi
     sleep 5  # Wait for 5 seconds before checking again
