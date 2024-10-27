@@ -7,7 +7,7 @@ cd ~/homelabx/proxy && docker compose up -d
 FILE="$HOME/homelabx/proxy/certs/rootCA.pem"
 echo "⏳ Waiting for mkcert to create a root CA..."
 while true; do
-    if [[ -f "$FILE" ]]; then
+    if [ -f "$FILE" ]; then
         ln -s "$FILE" plan/rootCA.pem
         ln -s "$FILE" design/rootCA.pem
         break
