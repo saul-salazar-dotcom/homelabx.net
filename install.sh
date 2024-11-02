@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+# exit on error
+set -o errexit
+
 git clone https://github.com/saul-salazar-dotcom/homelabx.net.git ~/homelabx
 
 cd ~/homelabx/proxy && docker compose up -d
