@@ -1,10 +1,19 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
-path=$(pwd)
-for name in authelia proxy smtp tv downloads torrents notes changelog wiki whiteboard design read schedule plan 
-do
-    echo "🚀 Starting service ${name}"
-    cd "$path/$name"
+# Loop through all entries in the current directory
+for dir in *; do
+    # Skip if it's not a directory
+    [ -d "$dir" ] || continue
+
+    # Skip specific directory names
+    case "$dir" in
+        ai|custom_theme)
+              continue
+        ;;
+    esac
+
+    echo "🚀 Starting service ${dir}"
+    cd "$path/$dir"
     if [ -z "$RECREATE" ]; then
         docker compose up -d
     else
