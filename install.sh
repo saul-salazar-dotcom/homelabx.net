@@ -3,6 +3,33 @@
 # exit on error
 set -o errexit
 
+# Check if Docker is NOT installed
+if ! command -v docker >/dev/null 2>&1; then
+  echo "Docker not found, installing..."
+
+  OS="$(uname -s)"
+
+  case "$OS" in
+    Linux)
+      curl -fsSL https://get.docker.com | sh
+      ;;
+    Darwin)
+      echo "macOS detected"
+      echo "Install Docker Desktop manually or via Homebrew"
+      exit 1
+      ;;
+    MINGW*|MSYS*|CYGWIN*)
+      echo "Windows detected"
+      echo "Install Docker Desktop manually: "
+      exit 1
+      ;;
+    *)
+      echo "Unsupported OS: $OS"
+      exit 1
+      ;;
+  esac
+fi
+
 git clone https://github.com/saul-salazar-dotcom/homelabx.net.git ~/homelabx
 
 cd ~/homelabx/proxy && docker compose up -d
