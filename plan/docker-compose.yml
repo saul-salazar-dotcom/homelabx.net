@@ -24,7 +24,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      VIKUNJA_SERVICE_PUBLICURL: https://plan.homelab.com
+      VIKUNJA_SERVICE_PUBLICURL: https://plan.traefik.me
       VIKUNJA_DATABASE_HOST: db
       VIKUNJA_DATABASE_PASSWORD: changeme
       VIKUNJA_DATABASE_TYPE: mysql
@@ -46,11 +46,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`plan.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=HostRegexp(`plan.{ip:.*}.traefik.me`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=3456"
-
 
   db:
     image: mariadb:10

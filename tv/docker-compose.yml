@@ -17,10 +17,10 @@ services:
       - 1900:1900
     environment:
       - TZ=America/Monterrey
-      - JELLYFIN_PublishedServerUrl=https://tv.homelab.com
+      - JELLYFIN_PublishedServerUrl=https://tv.traefik.me
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`tv.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`tv.{ip:.*}.traefik.me`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8096"
