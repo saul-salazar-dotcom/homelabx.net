@@ -29,7 +29,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`wiki.homelab.com`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=HostRegexp(`wiki.{ip:.*}.traefik.me`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=https"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=3000"
