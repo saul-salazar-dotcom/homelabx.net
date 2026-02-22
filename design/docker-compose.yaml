@@ -65,7 +65,7 @@ services:
       ## If you going to uncomment this, we recommend use here a trully randomly generated
       ## 512 bits base64 encoded string.  You can generate one with:
       ## python3 -c "import secrets; print(secrets.token_urlsafe(64))"
-      - PENPOT_SECRET_KEY=rWeYlZvU_GvbQ_97gs6R69X4j3a0Xq9XP_QmWEyW3KOXU0rJD25vNeexrCPbkaOvTWWAnLZ5gOUVMw2zYjnXOw
+      - PENPOT_SECRET_KEY=${PENPOT_SECRET_KEY}
 
       ## The PREPL host. Mainly used for external programatic access to penpot backend
       ## (example: admin). By default it listen on `localhost` but if you are going to use
@@ -82,8 +82,8 @@ services:
       ## Database connection parameters. Don't touch them unless you are using custom
       ## postgresql connection parameters.
       - PENPOT_DATABASE_URI=postgresql://postgres/penpot
-      - PENPOT_DATABASE_USERNAME=penpot
-      - PENPOT_DATABASE_PASSWORD=penpot
+      - PENPOT_DATABASE_USERNAME=${PENPOT_DATABASE_USERNAME}
+      - PENPOT_DATABASE_PASSWORD=${PENPOT_DATABASE_PASSWORD}
 
       ## Redis is used for the websockets notifications. Don't touch unless the redis
       ## container has different parameters or different name.
@@ -126,7 +126,7 @@ services:
 
       # OIDC
       - PENPOT_OIDC_CLIENT_ID=design
-      - PENPOT_OIDC_CLIENT_SECRET=insecure_secret
+      - PENPOT_OIDC_CLIENT_SECRET=${PENPOT_OIDC_CLIENT_SECRET}
       - PENPOT_OIDC_BASE_URI=https://auth.traefik.me
       - PENPOT_OIDC_AUTH_URI=https://auth.traefik.me/api/oidc/authorization
       - PENPOT_OIDC_TOKEN_URI=https://auth.traefik.me/api/oidc/token
@@ -155,9 +155,9 @@ services:
       - ./postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_INITDB_ARGS=--data-checksums
-      - POSTGRES_DB=penpot
-      - POSTGRES_USER=penpot
-      - POSTGRES_PASSWORD=penpot
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
   redis:
     image: redis:7

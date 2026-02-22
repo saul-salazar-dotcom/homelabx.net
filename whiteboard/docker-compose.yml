@@ -32,7 +32,7 @@ services:
       - NODE_OPTIONS="--import=./scripts/register.js"
       - AFFINE_CONFIG_PATH=/root/.affine/config
       - REDIS_SERVER_HOST=redis
-      - DATABASE_URL=postgres://affine:affine@postgres:5432/affine
+      - DATABASE_URL=postgres://${AFFINE_DB_USER}:${AFFINE_DB_PASSWORD}@postgres:5432/${AFFINE_DB_NAME}
       - NODE_ENV=production
       - AFFINE_SERVER_HOST=whiteboard.homelab.com
       - AFFINE_SERVER_PORT=3010
@@ -70,7 +70,7 @@ services:
       timeout: 5s
       retries: 5
     environment:
-      POSTGRES_USER: affine
-      POSTGRES_PASSWORD: affine
-      POSTGRES_DB: affine
+      POSTGRES_USER: ${AFFINE_DB_USER}
+      POSTGRES_PASSWORD: ${AFFINE_DB_PASSWORD}
+      POSTGRES_DB: ${AFFINE_DB_NAME}
       PGDATA: /var/lib/postgresql/data/pgdata

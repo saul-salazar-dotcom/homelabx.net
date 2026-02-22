@@ -1,3 +1,7 @@
 rootCA.pem
 certs
 data_*
+.env
+*.env
+config.env
+docker.env
